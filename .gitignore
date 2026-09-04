@@ -4,4 +4,5 @@ __pycache__/
 *.pyc
 *.sqlite3
 .venv/
+dados/*
 !dados/.gitkeep
