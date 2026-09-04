@@ -1,0 +1,14 @@
+{% extends 'cnpj/base.html' %}
+{% block conteudo %}
+<h1>Estatísticas Gerais</h1>
+<p>Total de empresas: {{ total_empresas }}</p>
+<p>Total de estabelecimentos: {{ total_estabelecimentos }}</p>
+<p>Estabelecimentos ativos: {{ total_ativos }}</p>
+
+<h2>Top 10 UFs</h2>
+<ul>
+{% for item in por_uf %}
+    <li>{{ item.uf }}: {{ item.total }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

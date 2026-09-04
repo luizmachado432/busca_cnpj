@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block titulo %}Consulta CNPJ{% endblock %}</title>
+    <style>
+        body { font-family: sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        nav a { margin-right: 15px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+        th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+        th { background: #f0f0f0; }
+        form { margin: 15px 0; }
+        input, select { padding: 5px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'cnpj:home' %}">Início</a>
+        <a href="{% url 'cnpj:buscar' %}">Buscar</a>
+        <a href="{% url 'cnpj:listar' %}">Listar / Filtrar</a>
+    </nav>
+    <hr>
+    {% block conteudo %}{% endblock %}
+</body>
+</html>
