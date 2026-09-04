@@ -1,0 +1,26 @@
+{% extends 'cnpj/base.html' %}
+{% block conteudo %}
+<h1>Buscar Empresa</h1>
+<form method="get">
+    <input type="text" name="q" value="{{ termo }}" placeholder="Razão social ou CNPJ">
+    <button type="submit">Buscar</button>
+</form>
+
+{% if termo %}
+    <p>{{ resultados|length }} resultado(s) para "{{ termo }}"</p>
+    {% if resultados %}
+    <table>
+        <tr><th>CNPJ Básico</th><th>Razão Social</th><th>Porte</th></tr>
+        {% for empresa in resultados %}
+        <tr>
+            <td>{{ empresa.cnpj_basico }}</td>
+            <td><a href="{% url 'cnpj:detalhe_empresa' empresa.cnpj_basico %}">{{ empresa.razao_social }}</a></td>
+            <td>{{ empresa.porte_empresa }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>Nenhuma empresa encontrada.</p>
+    {% endif %}
+{% endif %}
+{% endblock %}

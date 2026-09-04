@@ -3,22 +3,38 @@ from django.db import models
 class Cnae(models.Model):
     codigo = models.CharField(max_length=7, primary_key=True)
     descricao = models.CharField(max_length=200)
+    def __str__(self):
+        return self.descricao
+
 
 class Municipio(models.Model):
     codigo = models.CharField(max_length=4, primary_key=True)
     nome = models.CharField(max_length=100)
 
+    def __str__(self):
+            return self.nome
+
+
 class NaturezaJuridica(models.Model):
     codigo = models.CharField(max_length=4, primary_key=True)
     descricao = models.CharField(max_length=200)
+    def __str__(self):
+        return self.descricao
+
 
 class Motivo(models.Model):
     codigo = models.CharField(max_length=2, primary_key=True)
     descricao = models.CharField(max_length=200)
+    def __str__(self):
+        return self.descricao
+
 
 class Qualificacao(models.Model):
     codigo = models.CharField(max_length=2, primary_key=True)
     descricao = models.CharField(max_length=200)
+    def __str__(self):
+        return self.descricao
+
 class Empresa(models.Model):
     cnpj_basico = models.CharField(max_length=8, primary_key=True)
     razao_social = models.CharField(max_length=200)
@@ -40,7 +56,21 @@ class Socio(models.Model):
     qualificacao_representante = models.ForeignKey(Qualificacao, on_delete=models.SET_NULL, null=True, related_name='+', blank=True)
     faixa_etaria = models.CharField(max_length=1, blank=True)
 
+
+
 class Estabelecimento(models.Model):
+    SITUACAO_CHOICES = {
+    '01': 'Nula:01',
+    '02': 'Ativa:02',
+    '03': 'Suspensa:03',
+    '04': 'Inapta:04',
+    '08': 'Baixada:08',
+}
+
+    @property
+    def situacao_descricao(self):
+        return self.SITUACAO_CHOICES.get(self.situacao_cadastral, self.situacao_cadastral)
+
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='estabelecimentos')
     cnpj_ordem = models.CharField(max_length=4)
     cnpj_dv = models.CharField(max_length=2)

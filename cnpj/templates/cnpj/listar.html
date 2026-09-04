@@ -1,0 +1,57 @@
+{% extends 'cnpj/base.html' %}
+{% block conteudo %}
+<h1>Listar Estabelecimentos</h1>
+
+<form method="get">
+    <select name="uf" onchange="this.form.submit()">
+        <option value="">Todas as UFs</option>
+        {% for uf in ufs %}
+        <option value="{{ uf }}" {% if uf == filtros.uf %}selected{% endif %}>{{ uf }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="municipio">
+        <option value="">Todos os municípios</option>
+        {% for m in municipios %}
+        <option value="{{ m.codigo }}" {% if m.codigo == filtros.municipio %}selected{% endif %}>{{ m.nome }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="situacao">
+        <option value="">Qualquer situação</option>
+        <option value="01" {% if filtros.situacao == "01" %}selected{% endif %}>Nula</option>
+        <option value="02" {% if filtros.situacao == "02" %}selected{% endif %}>Ativa</option>
+        <option value="03" {% if filtros.situacao == "03" %}selected{% endif %}>Suspensa</option>
+        <option value="04" {% if filtros.situacao == "04" %}selected{% endif %}>Inapta</option>
+        <option value="08" {% if filtros.situacao == "08" %}selected{% endif %}>Baixada</option>
+    </select>
+
+    <select name="cnae">
+        <option value="">Qualquer CNAE</option>
+        {% for c in cnaes %}
+        <option value="{{ c.codigo }}" {% if c.codigo == filtros.cnae %}selected{% endif %}>{{ c.descricao }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Filtrar</button>
+</form>
+
+<p>{{ resultados.paginator.count }} estabelecimento(s) encontrado(s)</p>
+
+<table>
+    <tr><th>CNPJ</th><th>Nome Fantasia</th><th>Razão Social</th><th>UF</th><th>Situação</th></tr>
+    {% for est in resultados %}
+    <tr>
+        <td>{{ est.cnpj_completo }}</td>
+        <td>{{ est.nome_fantasia }}</td>
+        <td><a href="{% url 'cnpj:detalhe_empresa' est.empresa.cnpj_basico %}">{{ est.empresa.razao_social }}</a></td>
+        <td>{{ est.uf }}</td>
+        <td>{{ est.situacao_descricao }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% if resultados.has_previous %}<a href="?page={{ resultados.previous_page_number }}">Anterior</a>{% endif %}
+Página {{ resultados.number }} de {{ resultados.paginator.num_pages }}
+{% if resultados.has_next %}<a href="?page={{ resultados.next_page_number }}">Próxima</a>{% endif %}
+{% endblock %}

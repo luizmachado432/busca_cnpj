@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Q, Count
+from django.db.models import Count
 from django.core.paginator import Paginator
 from .models import Empresa, Estabelecimento, Municipio, Cnae
 
@@ -49,7 +49,11 @@ def detalhe_empresa(request, cnpj_basico):
 
 
 def listar(request):
-    estabelecimentos = Estabelecimento.objects.select_related('empresa', 'municipio', 'cnae_principal').all()
+    estabelecimentos = (
+        Estabelecimento.objects
+        .select_related('empresa', 'municipio', 'cnae_principal')
+        .order_by('id')
+    )
 
     uf = request.GET.get('uf', '')
     municipio_id = request.GET.get('municipio', '')
@@ -69,9 +73,31 @@ def listar(request):
     pagina = request.GET.get('page', 1)
     resultados = paginator.get_page(pagina)
 
+    # Se um UF ja foi escolhido, restringe a lista de municipios so aos daquele UF
+    # (evita listar 5000+ municipios do Brasil inteiro no dropdown)
+    municipios_disponiveis = Municipio.objects.none()
+    if uf:
+        codigos_municipio = (
+            Estabelecimento.objects.filter(uf=uf)
+            .exclude(municipio__isnull=True)
+            .values_list('municipio_id', flat=True)
+            .distinct()
+        )
+        municipios_disponiveis = Municipio.objects.filter(codigo__in=codigos_municipio).order_by('nome')
+
+    # CNAEs que realmente aparecem nos estabelecimentos (evita listar os ~1359 CNAEs todos)
+    codigos_cnae = (
+        Estabelecimento.objects.exclude(cnae_principal__isnull=True)
+        .values_list('cnae_principal_id', flat=True)
+        .distinct()
+    )
+    cnaes_disponiveis = Cnae.objects.filter(codigo__in=codigos_cnae).order_by('descricao')
+
     contexto = {
         'resultados': resultados,
         'ufs': Estabelecimento.objects.exclude(uf='').values_list('uf', flat=True).distinct().order_by('uf'),
+        'municipios': municipios_disponiveis,
+        'cnaes': cnaes_disponiveis,
         'filtros': {'uf': uf, 'municipio': municipio_id, 'situacao': situacao, 'cnae': cnae_id},
     }
     return render(request, 'cnpj/listar.html', contexto)

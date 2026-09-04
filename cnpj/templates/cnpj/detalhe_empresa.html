@@ -1,0 +1,35 @@
+{% extends 'cnpj/base.html' %}
+{% block conteudo %}
+<h1>{{ empresa.razao_social }}</h1>
+<p><strong>CNPJ Básico:</strong> {{ empresa.cnpj_basico }}</p>
+<p><strong>Natureza Jurídica:</strong> {{ empresa.natureza_juridica }}</p>
+<p><strong>Capital Social:</strong> R$ {{ empresa.capital_social }}</p>
+<p><strong>Porte:</strong> {{ empresa.porte_empresa }}</p>
+
+<h2>Estabelecimentos ({{ estabelecimentos|length }})</h2>
+<table>
+    <tr><th>CNPJ Completo</th><th>Nome Fantasia</th><th>Situação</th><th>UF</th><th>Município</th><th>CNAE Principal</th></tr>
+    {% for est in estabelecimentos %}
+    <tr>
+        <td>{{ est.cnpj_completo }}</td>
+        <td>{{ est.nome_fantasia }}</td>
+        <td>{{ est.situacao_descricao }}</td>
+        <td>{{ est.uf }}</td>
+        <td>{{ est.municipio }}</td>
+        <td>{{ est.cnae_principal }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Sócios ({{ socios|length }})</h2>
+<table>
+    <tr><th>Nome</th><th>Qualificação</th><th>Data de Entrada</th></tr>
+    {% for socio in socios %}
+    <tr>
+        <td>{{ socio.nome_socio }}</td>
+        <td>{{ socio.qualificacao_socio }}</td>
+        <td>{{ socio.data_entrada_sociedade }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
