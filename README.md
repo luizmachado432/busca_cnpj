@@ -7,8 +7,7 @@ CNPJ disponibilizados pela Receita Federal.
 ## Pré-requisitos
 
 - Python 3.10+
-- PostgreSQL instalado e rodando localmente
-- Git
+- PostgreSQL
 
 # 1. Criar e ativar o ambiente virtual
 
