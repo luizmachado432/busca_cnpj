@@ -56,7 +56,7 @@ class Command(BaseCommand):
                         faixa_etaria=faixa_etaria,
                     ))
 
-                    if len(objetos) >= 5000:
+                    if len(objetos) >= 4000:
                         Socio.objects.bulk_create(objetos, batch_size=5000, ignore_conflicts=True)
                         total += len(objetos)
                         objetos = []

@@ -5,13 +5,12 @@ import requests
 from django.core.management.base import BaseCommand
 
 SHARE_TOKEN = "YggdBLfdninEJX9"
-ANO_MES = "2026-08"  # ajuste conforme a pasta mais recente disponivel no portal
+ANO_MES = "2026-08"
 BASE_URL = f"https://arquivos.receitafederal.gov.br/public.php/dav/files/{SHARE_TOKEN}/{ANO_MES}"
-AUTH = (SHARE_TOKEN, "")  # HTTP Basic Auth: token como usuario, senha vazia
+AUTH = (SHARE_TOKEN, "")
 
 DADOS_DIR = Path(__file__).resolve().parent.parent.parent.parent / "dados"
 
-# Tabelas pequenas: sempre baixamos por completo (sao poucos KB/MB cada).
 ARQUIVOS_PEQUENOS = [
     "Cnaes.zip",
     "Naturezas.zip",
@@ -21,23 +20,20 @@ ARQUIVOS_PEQUENOS = [
 ]
 
 # Tabelas grandes: a Receita divide cada uma em 10 partes (0 a 9).
-# A base completa soma dezenas de GB, entao para fins deste desafio
-# limitamos quantas partes baixar via PARTES_A_BAIXAR, mas o codigo
-# ja contempla a existencia das 10 partes de cada tabela.
 TABELAS_GRANDES = ["Empresas", "Estabelecimentos", "Socios"]
-TOTAL_PARTES = 10  # partes 0 a 9 que a Receita disponibiliza por tabela
-PARTES_A_BAIXAR = 1  # <-- ajuste aqui para processar mais partes (ate 10)
+TOTAL_PARTES = 10
+
+# Quais partes baixar de cada tabela grande
+# Ex: [0] baixa so a parte 0; [1] baixa so a parte 1; [0, 1] baixa as duas.
+PARTES_INDICES = [1]
 
 
 def montar_lista_arquivos_grandes():
     arquivos = []
     for tabela in TABELAS_GRANDES:
-        for parte in range(TOTAL_PARTES):
-            nome = f"{tabela}{parte}.zip"
-            if parte < PARTES_A_BAIXAR:
-                arquivos.append(nome)
-            # partes nao incluidas (parte >= PARTES_A_BAIXAR) sao
-            # conhecidas mas deliberadamente nao baixadas nesta execucao
+        for indice in PARTES_INDICES:
+            if 0 <= indice < TOTAL_PARTES:
+                arquivos.append(f"{tabela}{indice}.zip")
     return arquivos
 
 
@@ -51,8 +47,8 @@ class Command(BaseCommand):
         DADOS_DIR.mkdir(exist_ok=True)
 
         self.stdout.write(
-            f"Baixando {len(ARQUIVOS)} arquivo(s): {PARTES_A_BAIXAR} de {TOTAL_PARTES} "
-            f"partes de cada tabela grande ({', '.join(TABELAS_GRANDES)})."
+            f"Baixando {len(ARQUIVOS)} arquivo(s): partes {PARTES_INDICES} de cada tabela grande "
+            f"({', '.join(TABELAS_GRANDES)})."
         )
 
         for nome_arquivo in ARQUIVOS:
