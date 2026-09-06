@@ -45,11 +45,8 @@ GRANT ALL ON SCHEMA public TO cnpj_user;
 
 # 4. Configurar as variáveis de ambiente
 
-Copie o arquivo de exemplo e preencha com os valores que você definiu acima:
+Copie e renomeie o arquivo de exemplo e preencha com os valores que você definiu acima:
 
-```bash
-cp .env.example .env
-```
 
 Edite o `.env` com um editor de texto e preencha `DB_PASSWORD` (a senha escolhida no
 passo 4) e `SECRET_KEY`. Para gerar uma `SECRET_KEY` nova:
