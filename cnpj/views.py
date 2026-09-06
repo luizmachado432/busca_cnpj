@@ -39,7 +39,7 @@ def home(request):
             Estabelecimento.objects.exclude(uf='')
             .values('uf')
             .annotate(total=Count('id'))
-            .order_by('-total')[:10]
+            .order_by('-total')[:5]
         ),
         'por_situacao': por_situacao,
         'por_porte': por_porte,
