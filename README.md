@@ -63,18 +63,16 @@ python manage.py migrate
 
 # 6. Baixar os dados do CNPJ
 
-Este comando baixa e descompacta automaticamente os arquivos públicos da Receita
-Federal (não é necessário baixar nada manualmente):
+Este comando baixa e descompacta automaticamente os arquivos das empresas:
 
 ```bash
 python manage.py download_data
 ```
 
 Por padrão, o comando baixa as tabelas auxiliares completas (CNAEs, Municípios,
-Naturezas Jurídicas, Qualificações, Motivos) e apenas a primeira das 10 partes de
-cada tabela grande (Empresas, Estabelecimentos, Sócios), para manter o tempo de
-execução e o espaço em disco administráveis. Para processar mais partes, ajuste a
-constante `PARTES_A_BAIXAR` em `cnpj/management/commands/download_data.py`.
+Naturezas Jurídicas, Qualificações, Motivos) e uma das 10 partes de
+cada tabela grande (empresas, estabelecimentos, socios), pois esses arquivos possuem varios gbs e para testes é desnecessario a instalaçao de todos. Para processar mais partes ajuste a
+constante `PARTES_A_BAIXAR` em `cnpj/management/commands/download_data.py` ela é uma lista que instala todos a partir do numero no final de cada arquivo.
 
 # 7. Popular o banco de dados
 
@@ -82,7 +80,7 @@ constante `PARTES_A_BAIXAR` em `cnpj/management/commands/download_data.py`.
 python manage.py ingest_all
 ```
 
-Isso executa, na ordem correta, a importação de todas as tabelas
+Isso executa na ordem correta, a importação de todas as tabelas na ordem para atender todas dependencias entre elas.
 (tabelas auxiliares → Empresas → Estabelecimentos → Sócios).
 ### 9. Rodar o servidor
 
@@ -102,7 +100,6 @@ Acesse `http://127.0.0.1:8000/` no navegador.
   estabelecimentos vinculados e sócios.
 - **Listagem com filtros** (`/listar/`): por UF, município, situação cadastral e
   CNAE principal, com paginação.
-- **Django Admin** (`/admin/`): consulta administrativa direta às tabelas.
 
 ## Observação sobre a amostra de dados
 
@@ -114,3 +111,8 @@ necessariamente estabelecimentos ou socios correspondentes carregados (já que a
 divisão em partes não segue a mesma distribuição entre os tres arquivos). O
 pipeline de ingestao foi construido para lidar com a base completa caso as demais
 partes sejam adicionadas à lista `ARQUIVOS` em `download_data.py`.
+
+## Observação sobre segurança
+
+Neste projeto, não tive como prioridade o tratamento de questões de segurança de forma aprofundada. Algumas medidas foram deixadas de lado por se tratar de uma aplicação simples, local e desenvolvida com o propósito de teste e avaliação técnica. Isso não representa necessariamente um problema para o contexto deste projeto, mas achei importante deixar claras as minhas escolhas e intenções em relação à segurança, principalmente para não dar a entender que esses aspectos foram ignorados por desconhecimento ou falta de consideração.
+
