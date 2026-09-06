@@ -1,14 +1,59 @@
 {% extends 'cnpj/base.html' %}
 {% block conteudo %}
 <h1>Estatísticas Gerais</h1>
-<p>Total de empresas: {{ total_empresas }}</p>
-<p>Total de estabelecimentos: {{ total_estabelecimentos }}</p>
-<p>Estabelecimentos ativos: {{ total_ativos }}</p>
 
-<h2>Top 10 UFs</h2>
-<ul>
-{% for item in por_uf %}
-    <li>{{ item.uf }}: {{ item.total }}</li>
-{% endfor %}
-</ul>
+<p>
+    <strong>{{ total_empresas }}</strong> empresas &nbsp;|&nbsp;
+    <strong>{{ total_estabelecimentos }}</strong> estabelecimentos &nbsp;|&nbsp;
+    <strong>{{ total_ativos }}</strong> ativos &nbsp;|&nbsp;
+    <strong>{{ total_socios }}</strong> sócios
+</p>
+
+<h2>Estabelecimentos por UF (top 10)</h2>
+<table>
+    <tr><th>UF</th><th>Total</th></tr>
+    {% for item in por_uf %}
+    <tr><td>{{ item.uf }}</td><td>{{ item.total }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>Estabelecimentos por Situação Cadastral</h2>
+<table>
+    <tr><th>Situação</th><th>Total</th></tr>
+    {% for item in por_situacao %}
+    <tr><td>{{ item.label }}</td><td>{{ item.total }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>Empresas por Porte</h2>
+<table>
+    <tr><th>Porte</th><th>Total</th></tr>
+    {% for item in por_porte %}
+    <tr><td>{{ item.label }}</td><td>{{ item.total }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>CNAEs mais comuns (top 10)</h2>
+<table>
+    <tr><th>CNAE</th><th>Total</th></tr>
+    {% for item in top_cnaes %}
+    <tr><td>{{ item.cnae_principal__descricao }}</td><td>{{ item.total }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>Naturezas Jurídicas mais comuns (top 10)</h2>
+<table>
+    <tr><th>Natureza Jurídica</th><th>Total</th></tr>
+    {% for item in top_naturezas %}
+    <tr><td>{{ item.natureza_juridica__descricao }}</td><td>{{ item.total }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>Municípios com mais estabelecimentos (top 10)</h2>
+<table>
+    <tr><th>Município</th><th>UF</th><th>Total</th></tr>
+    {% for item in top_municipios %}
+    <tr><td>{{ item.municipio__nome }}</td><td>{{ item.uf }}</td><td>{{ item.total }}</td></tr>
+    {% endfor %}
+</table>
 {% endblock %}
