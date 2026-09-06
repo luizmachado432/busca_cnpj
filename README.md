@@ -47,8 +47,8 @@ GRANT ALL ON SCHEMA public TO cnpj_user;
 Copie e renomeie o arquivo de exemplo e preencha com os valores que você definiu acima:
 
 
-Edite o `.env` com um editor de texto e preencha `DB_PASSWORD` (a senha escolhida no
-passo 4) e `SECRET_KEY`. Para gerar uma `SECRET_KEY` nova:
+Edite o `.env` e preencha `DB_PASSWORD` (a senha escolhida no
+passo 4) com nome do banco de dados junto ao nome de usuario criado e a `SECRET_KEY`. Para gerar uma `SECRET_KEY` nova:
 
 ```bash
 python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
