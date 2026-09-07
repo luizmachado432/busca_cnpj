@@ -117,10 +117,8 @@ Neste projeto, não tive como prioridade o tratamento de questões de segurança
 
 ## Uso de Inteligência Artificial
 
-Este projeto contou com o apoio do Claude (Anthropic) durante o desenvolvimento,
-principalmente nas seguintes etapas: construção das views do Django (busca,
-detalhe da empresa, listagem com filtros e estatísticas gerais) e orientação
-sobre como manipular e consultar os dados no banco (modelagem das tabelas,
-scripts de ingestão dos arquivos do CNPJ e consultas agregadas para as
-estatísticas).
-
+Este projeto contou com o apoio do Claude durante o desenvolvimento,
+principalmente nas seguintes etapas: construção das views do Django busca,
+detalhe da empresa, listagem com filtros e estatísticas gerais e suporte
+sobre como manipular e consultar os dados no banco com a modelagem das tabelas w
+scripts de ingestão dos arquivos do CNPJ 
