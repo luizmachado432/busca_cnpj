@@ -115,3 +115,12 @@ partes sejam adicionadas à lista `ARQUIVOS` em `download_data.py`.
 
 Neste projeto, não tive como prioridade o tratamento de questões de segurança de forma aprofundada. Algumas medidas foram deixadas de lado por se tratar de uma aplicação simples, local e desenvolvida com o propósito de teste e avaliação técnica. Isso não representa necessariamente um problema para o contexto deste projeto, mas achei importante deixar claras as minhas escolhas e intenções em relação à segurança, principalmente para não dar a entender que esses aspectos foram ignorados por desconhecimento ou falta de consideração.
 
+## Uso de Inteligência Artificial
+
+Este projeto contou com o apoio do Claude (Anthropic) durante o desenvolvimento,
+principalmente nas seguintes etapas: construção das views do Django (busca,
+detalhe da empresa, listagem com filtros e estatísticas gerais) e orientação
+sobre como manipular e consultar os dados no banco (modelagem das tabelas,
+scripts de ingestão dos arquivos do CNPJ e consultas agregadas para as
+estatísticas).
+
